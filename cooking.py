@@ -15,7 +15,7 @@ RESET_PIN = 15
 DC_PIN    = 16
 
 # Very important... This lets py-gaugette 'know' what pins to use in order to reset the display
-oled = gaugette.ssd1306.SSD1306(reset_pin=RESET_PIN, dc_pin=DC_PIN)
+led = gaugette.ssd1306.SSD1306(reset_pin=RESET_PIN, dc_pin=DC_PIN)
 
 # INPUT - BUTTONS
 btn1 = 4
@@ -63,13 +63,13 @@ def oled_info(temperature, target_temp, heater):
         heater_info = "OFF"
     print "Target %s --- %s --- Temp %s" %(target_string, heater_info, temp_string)
 
-    oled.begin()
-    oled.clear_display() # This clears the display but only when there is a led.display() as well!
+    led.begin()
+    led.clear_display() # This clears the display but only when there is a led.display() as well!
     text = "Target: %s" %(target_string)
-    oled.draw_text2(0,0,text,2)
+    led.draw_text2(0,0,text,2)
     text2 = "Temp: %s" %(temp_string)
-    oled.draw_text2(0,16,text2,2)
-    oled.display()
+    led.draw_text2(0,16,text2,2)
+    led.display()
 
     sleep(10)
 
@@ -107,7 +107,6 @@ def main():
             thread.start_new_thread(oled_info, (temperature, target_temp, heater) )
         except KeyboardInterrupt:
             GPIO.cleanup()
-            lcd.clear()
             sys.exit(0)
 
 GPIO.add_event_detect(TARGET_BTNS, GPIO.RISING, callback=target_change, bouncetime=1000)
