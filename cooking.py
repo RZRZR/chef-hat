@@ -24,8 +24,8 @@ btn3 = 2
 
 TARGET_BTNS = { btn1, btn2, }
 
-GPIO.setup(hotter_btn, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(colder_btn, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(btn1, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(btn2, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 # Where to find the temp sensor (don't change)
 base_dir = '/sys/bus/w1/devices/'
