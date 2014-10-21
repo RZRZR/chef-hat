@@ -18,10 +18,11 @@ DC_PIN    = 16
 oled = gaugette.ssd1306.SSD1306(reset_pin=RESET_PIN, dc_pin=DC_PIN)
 
 # INPUT - BUTTONS
-
-TARGET_BTNS = { 4: btn1, 3: btn2, }
-
+btn1 = 4
+btn2 = 3
 btn3 = 2
+
+TARGET_BTNS = { btn1, btn2, }
 
 GPIO.setup(hotter_btn, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(colder_btn, GPIO.IN, pull_up_down=GPIO.PUD_UP)
