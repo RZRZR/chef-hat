@@ -5,34 +5,16 @@ from datetime import datetime
 import glob
 from energenie import switch_on, switch_off
 import RPi.GPIO as GPIO
-import gaugette.ssd1306
 
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
-
-# Setting some variables for our reset pin etc.
-RESET_PIN = 15
-DC_PIN    = 16
-
-# Very important... This lets py-gaugette 'know' what pins to use in order to reset the display
-led = gaugette.ssd1306.SSD1306(reset_pin=RESET_PIN, dc_pin=DC_PIN)
-
-# INPUT - BUTTONS
-btn1 = 4
-btn2 = 3
-btn3 = 2
-
-TARGET_BTNS = { btn1, btn2, }
-
-GPIO.setup(btn1, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(btn2, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 # Where to find the temp sensor (don't change)
 base_dir = '/sys/bus/w1/devices/'
 device_folder = glob.glob(base_dir + '28*')[0]
 device_file = device_folder + '/w1_slave'
 
-target_temp = 63.50
+target_temp = 55.00
 
 # This reads the one wire sensor file and converts it to degrees C (to 2 decimal places)
 def take_temp():
@@ -63,14 +45,6 @@ def oled_info(temperature, target_temp, heater):
         heater_info = "OFF"
     print "Target %s --- %s --- Temp %s" %(target_string, heater_info, temp_string)
 
-    led.begin()
-    led.clear_display() # This clears the display but only when there is a led.display() as well!
-    text = "Target: %s" %(target_string)
-    led.draw_text2(0,0,text,2)
-    text2 = "Temp: %s" %(temp_string)
-    led.draw_text2(0,16,text2,2)
-    led.display()
-
     sleep(10)
 
 
@@ -78,14 +52,10 @@ def oled_info(temperature, target_temp, heater):
 def slowcooker(temperature, target_temp):
     if temperature < target_temp:
         switch_on(1) # turn on the energenie socket
-        GPIO.output(red_led, GPIO.LOW)
-        GPIO.output(green_led, GPIO.HIGH)
         heater = 1
 
     else:
         switch_off(1) # turn off the energenie socket
-        GPIO.output(green_led, GPIO.LOW)
-        GPIO.output(red_led, GPIO.HIGH)
         heater = 0
     return heater
 
@@ -109,15 +79,13 @@ def main():
             GPIO.cleanup()
             sys.exit(0)
 
-GPIO.add_event_detect(TARGET_BTNS, GPIO.RISING, callback=target_change, bouncetime=1000)
+#GPIO.add_event_detect(TARGET_BTNS, GPIO.RISING, callback=target_change, bouncetime=1000)
 
 
 if __name__=="__main__":
         # Initiate LCD
-    lcd.begin(16, 1)
     print "Hey Rachel!"
-    lcd.message("Hey Rachel! \nWhats cooking?")
-    lcd.clear()
+
         #Start main activity
     main()
 
