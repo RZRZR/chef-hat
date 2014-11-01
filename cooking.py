@@ -59,15 +59,6 @@ def slowcooker(temperature, target_temp):
         heater = 0
     return heater
 
-# This is called only when one of the Temp buttons is hit
-def target_change(TARGET_BTNS):
-    if TARGET_BTNS == btn1:
-        target_temp = target_temp + 1
-    if TARGET_BTNS == btn2:
-        target_temp = target_temp - 1
-    print "TARGET TEMP UPDATED:   %d" %target_temp
-    return target_temp
-
 def main():
     while 1:
         try:
@@ -85,7 +76,6 @@ def main():
 if __name__=="__main__":
         # Initiate LCD
     print "Hey Rachel!"
-
         #Start main activity
     main()
 
