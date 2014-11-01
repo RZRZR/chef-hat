@@ -70,9 +70,6 @@ def main():
             GPIO.cleanup()
             sys.exit(0)
 
-#GPIO.add_event_detect(TARGET_BTNS, GPIO.RISING, callback=target_change, bouncetime=1000)
-
-
 if __name__=="__main__":
         # Initiate LCD
     print "Hey Rachel!"
