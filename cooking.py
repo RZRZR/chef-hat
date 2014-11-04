@@ -9,6 +9,16 @@ import RPi.GPIO as GPIO
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
 
+
+# Define GPIO mapping
+hotter_btn = 2
+colder_btn = 3
+start_btn = 4
+
+GPIO.setup(hotter_btn, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(colder_btn, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(start_btn, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
 # Where to find the temp sensor (don't change)
 base_dir = '/sys/bus/w1/devices/'
 device_folder = glob.glob(base_dir + '28*')[0]
@@ -45,8 +55,25 @@ def oled_info(temperature, target_temp, heater):
         heater_info = "OFF"
     print "Target %s --- %s --- Temp %s" %(target_string, heater_info, temp_string)
 
-    sleep(10)
+# This is called only when the hotter Target Temp button is hit
+def hotter_target(hotter_btn):
+    global target_temp
+    if target_temp != 0:
+        target_temp = target_temp + 1
+    else:
+        target_temp = target_default + 1
+    print "TARGET TEMP UPDATED:   %d" %target_temp
+    return target_temp
 
+# This is called only when the colder Target Temp button is hit
+def colder_target(colder_btn):
+    global target_temp
+    if target_temp != 0:
+        target_temp = target_temp - 1
+    else:
+        target_temp = target_default - 1
+    print "TARGET TEMP UPDATED:   %d" %target_temp
+    return target_temp
 
 # This is decides if the energenie socket (i.e. the heating element) should be on or off
 def slowcooker(temperature, target_temp):
@@ -59,6 +86,7 @@ def slowcooker(temperature, target_temp):
         heater = 0
     return heater
 
+
 def main():
     while 1:
         try:
@@ -69,6 +97,11 @@ def main():
         except KeyboardInterrupt:
             GPIO.cleanup()
             sys.exit(0)
+
+# Call backs on the GPIO
+GPIO.add_event_detect(hotter_btn, GPIO.RISING, callback=hotter_target, bouncetime=1000)
+GPIO.add_event_detect(colder_btn, GPIO.RISING, callback=colder_target, bouncetime=1000)
+GPIO.add_event_detect(start_btn, GPIO.RISING, callback=timer, bouncetime=1000)
 
 if __name__=="__main__":
         # Initiate LCD
