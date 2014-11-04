@@ -1,5 +1,6 @@
 
-Changes for version 2
+### Changes for version 2
+
 1. Redo on Kicad
 1. Fix missing trace
 1. Change OLED screen to LCD
