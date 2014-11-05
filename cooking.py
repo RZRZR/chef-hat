@@ -9,7 +9,6 @@ import RPi.GPIO as GPIO
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
 
-
 # Define GPIO mapping
 hotter_btn = 2
 colder_btn = 3
@@ -38,7 +37,6 @@ def take_temp():
         # Put the decimal point in the right place and display it.
     temperature = temperature / 1000
     return temperature
-    sleep(2)
 
 # This sets up the data to be displayed on the LCD screen
 def oled_info(temperature, target_temp, heater):
@@ -58,20 +56,14 @@ def oled_info(temperature, target_temp, heater):
 # This is called only when the hotter Target Temp button is hit
 def hotter_target(hotter_btn):
     global target_temp
-    if target_temp != 0:
-        target_temp = target_temp + 1
-    else:
-        target_temp = target_default + 1
+    target_temp = target_temp + 1
     print "TARGET TEMP UPDATED:   %d" %target_temp
     return target_temp
 
 # This is called only when the colder Target Temp button is hit
 def colder_target(colder_btn):
     global target_temp
-    if target_temp != 0:
-        target_temp = target_temp - 1
-    else:
-        target_temp = target_default - 1
+    target_temp = target_temp - 1
     print "TARGET TEMP UPDATED:   %d" %target_temp
     return target_temp
 
@@ -80,12 +72,10 @@ def slowcooker(temperature, target_temp):
     if temperature < target_temp:
         switch_on(1) # turn on the energenie socket
         heater = 1
-
     else:
         switch_off(1) # turn off the energenie socket
         heater = 0
     return heater
-
 
 def main():
     while 1:
@@ -101,11 +91,9 @@ def main():
 # Call backs on the GPIO
 GPIO.add_event_detect(hotter_btn, GPIO.RISING, callback=hotter_target, bouncetime=1000)
 GPIO.add_event_detect(colder_btn, GPIO.RISING, callback=colder_target, bouncetime=1000)
-GPIO.add_event_detect(start_btn, GPIO.RISING, callback=timer, bouncetime=1000)
+#GPIO.add_event_detect(start_btn, GPIO.RISING, callback=timer, bouncetime=1000)
 
 if __name__=="__main__":
-        # Initiate LCD
     print "Hey Rachel!"
-        #Start main activity
     main()
 
