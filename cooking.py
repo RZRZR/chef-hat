@@ -6,7 +6,7 @@ import glob
 from energenie import switch_on, switch_off
 import RPi.GPIO as GPIO
 
-os.system('modprobe w1-gpio')
+os.system('modprobe w1-gpio gpiopin=12')
 os.system('modprobe w1-therm')
 
 # Define GPIO mapping
@@ -91,7 +91,7 @@ def main():
 # Call backs on the GPIO
 GPIO.add_event_detect(hotter_btn, GPIO.RISING, callback=hotter_target, bouncetime=1000)
 GPIO.add_event_detect(colder_btn, GPIO.RISING, callback=colder_target, bouncetime=1000)
-#GPIO.add_event_detect(start_btn, GPIO.RISING, callback=timer, bouncetime=1000)
+
 
 if __name__=="__main__":
     print "Hey Rachel!"
