@@ -1,5 +1,5 @@
 from energenie import switch_on, switch_off
-import lcdtest as lcd
+import lcd
 from time import sleep
 import RPi.GPIO as GPIO
 
