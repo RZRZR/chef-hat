@@ -5,6 +5,7 @@ from temp import take_temp
 
 desired_temp = 21
 
+
 def main():
     while True:
         temp = take_temp()

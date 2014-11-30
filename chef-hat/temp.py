@@ -2,6 +2,7 @@ from glob import glob
 import os
 from time import sleep
 
+
 def get_device_file():
     devices_path = '/sys/bus/w1/devices/'
     devices = glob(devices_path + '28*')
@@ -9,8 +10,11 @@ def get_device_file():
         os.system('sudo modprobe w1-gpio')
         os.system('sudo modprobe w1-therm')
     devices = glob(devices_path + '28*')
+    if not devices:
+        raise HardwareNotConnected('Temperature sensor not connected')
     device_file = devices[0] + '/w1_slave'
     return device_file
+
 
 def take_temp():
     with open(device_file) as df:
@@ -19,7 +23,13 @@ def take_temp():
     temp = float(temp_data[2:]) / 1000
     return temp
 
+
+class HardwareNotConnected(Exception):
+    pass
+
+
 device_file = get_device_file()
+
 
 def main():
     while True:
