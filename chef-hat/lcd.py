@@ -77,12 +77,12 @@ def lcd_byte(bits, mode):
 
 
 # Define GPIO to LCD mapping
-LCD_RS = 2
-LCD_E = 3
-LCD_D4 = 4
-LCD_D5 = 15
-LCD_D6 = 14
-LCD_D7 = 18
+LCD_RS = 5
+LCD_E = 6
+LCD_D4 = 11
+LCD_D5 = 19
+LCD_D6 = 13
+LCD_D7 = 26
 
 # Define some device constants
 LCD_WIDTH = 8  # Maximum characters per line
