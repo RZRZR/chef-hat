@@ -9,7 +9,7 @@ def main():
     while True:
         temp = take_temp()
         print(temp)
-        if temp > desired_temp:
+        if temp < desired_temp:
             switch_on()
         else:
             switch_off()
